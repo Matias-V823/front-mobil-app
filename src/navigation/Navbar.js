@@ -1,48 +1,43 @@
 import React from 'react';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
+import { Text } from 'react-native';
 
 //Screens
-import Home from "../screens/Home";
-import Asistencia from "../screens/Asistencia";
+import Inicio from "../screens/Inicio";
+import Busqueda from "../screens/Busqueda";
 import Camara from "../screens/Camara";
-import Login from "../screens/Login";
-import Settings from "../screens/SettingsScreen";
-import Stack from "../screens/StackScreen";
+import Perfil from "../screens/Perfil";
 
 //Iconos
 import Feather from '@expo/vector-icons/Feather';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import Ionicons from '@expo/vector-icons/Ionicons';
-
-
-
-
-
 
 const Tab = createBottomTabNavigator();
 
-function MyTabs(){
-    return(
+function MyTabs() {
+    return (
         <Tab.Navigator>
             <Tab.Screen  
                 name="Inicio" 
-                component={Home} 
+                component={Inicio} 
                 options={{
-                    tabBarLabel: 'Inicio',
-                    tabBarIcon: ({color , size})=>(
-                        <Feather name="home" size={24} color="black" />
+                    tabBarLabel: ({ focused }) => (
+                        <Text style={{ color: focused ? 'green' : 'gray' }}>Inicio</Text>
+                    ),
+                    tabBarIcon: ({ focused }) => (
+                        <Feather name="home" size={24} color={focused ? 'green' : 'gray'} />
                     ),
                 }}
-            
             />
             <Tab.Screen  
-                name="Asistencia" 
-                component={Asistencia} 
+                name="Busqueda" 
+                component={Busqueda} 
                 options={{
-                    tabBarLabel: 'Asistencia',
-                    tabBarIcon: ({color , size})=>(
-                        <Feather name="message-circle" size={24} color="black" />
+                    tabBarLabel: ({ focused }) => (
+                        <Text style={{ color: focused ? 'green' : 'gray' }}>Busqueda</Text>
+                    ),
+                    tabBarIcon: ({ focused }) => (
+                        <Feather name="search" size={24} color={focused ? 'green' : 'gray'} />
                     ),
                 }}
             />
@@ -50,31 +45,34 @@ function MyTabs(){
                 name="Camara" 
                 component={Camara} 
                 options={{
-                    tabBarLabel: 'Camara',
-                    tabBarIcon: ({color , size})=>(
-                        <Ionicons name="camera-outline" size={24} color="black" />
+                    tabBarLabel: ({ focused }) => (
+                        <Text style={{ color: focused ? 'green' : 'gray' }}>Camara</Text>
+                    ),
+                    tabBarIcon: ({ focused }) => (
+                        <Feather name="camera" size={24} color={focused ? 'green' : 'gray'} />
                     ),
                 }}
             />
             <Tab.Screen 
-                name="Cuenta" 
-                component={Settings} 
+                name="Perfil" 
+                component={Perfil} 
                 options={{
-                    tabBarLabel: 'Perfil',
-                    tabBarIcon: ({color , size})=>(
-                        <MaterialCommunityIcons name="account-outline" size={24} color="black" />
+                    tabBarLabel: ({ focused }) => (
+                        <Text style={{ color: focused ? 'green' : 'gray' }}>Perfil</Text>
+                    ),
+                    tabBarIcon: ({ focused }) => (
+                        <Feather name="user" size={24} color={focused ? 'green' : 'gray'} />
                     ),
                 }}
-             
-             />
+            />
         </Tab.Navigator>
     );
 }
 
-export default function Navigation(){
-    return(
+export default function Navigation() {
+    return (
         <NavigationContainer>
-            <MyTabs/>
+            <MyTabs />
         </NavigationContainer>
     );
 }
