@@ -4,7 +4,7 @@ import { NativeWindStyleSheet } from 'nativewind';
 import { StatusBar } from 'expo-status-bar';
 
 
-const welcome = () => {
+const Bienvenida = () => {
     return (
         <View className='flex-1 justify-center items-center flex-col'>
           <View className='items-center'>
@@ -25,4 +25,4 @@ const welcome = () => {
       );
 }
 
-export default welcome
+export default Bienvenida

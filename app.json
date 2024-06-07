@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "criminal-mobil",
-    "slug": "criminal-mobil",
+    "name": "Criminal_scan",
+    "slug": "Criminal_scan",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
