@@ -35,7 +35,7 @@ function MyTabs() {
       }}
     >
       <Tab.Screen
-        name="Inicio"
+        name="InicioTab"
         component={InicioStack}
         options={{
           tabBarLabel: ({ focused }) => (

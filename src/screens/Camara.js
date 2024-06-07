@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, Image, SafeAreaView, ScrollView, ActivityIndicator, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { styled } from 'nativewind';
-// import { ScrollView } from 'react-native-gesture-handler';
+import { FullWindowOverlay } from 'react-native-screens';
 
 const Camara = () => {
   const StyledSafeAreaView = styled(SafeAreaView);
@@ -13,6 +13,7 @@ const Camara = () => {
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [apiResponse, setApiResponse] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const uploadImage = async (option) => {
     try {
@@ -46,12 +47,13 @@ const Camara = () => {
         console.log("La selección de imagen fue cancelada o no se seleccionó ninguna imagen");
       }
     } catch (error) {
-      console.error("Error al cargar la imagen:", error.message);
+      Alert.alert("Error", "Error al cargar la imagen: " + error.message);
     }
   };
 
   const sendImageToApi = async (imageUri) => {
     try {
+      setLoading(true);
       const formData = new FormData();
       formData.append('image', {
         uri: imageUri,
@@ -70,17 +72,21 @@ const Camara = () => {
       const json = await response.json();
       setApiResponse(json);
     } catch (error) {
-      console.error('Error al enviar la imagen a la API:', error.message);
+      Alert.alert("Error", "Error al enviar la imagen a la API: " + error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <ScrollView>
-      <StyledSafeAreaView className="flex-1 justify-center items-center p-6 w-full bg-gray-100">
+    <ScrollView className="flex-1 bg-white">
+      <StyledView className="p-4">
+      <StyledText className="text-black text-5xl font-bold mt-4">Escaneo</StyledText>
+      <StyledSafeAreaView className="flex-1 justify-center items-center p-6 w-full mt-4">
         {selectedImage && (
           <StyledImage
             source={{ uri: selectedImage }}
-            style={{ width: 200, height: 200, marginBottom: 20, borderRadius: 10 }}
+            style={{ width: 200, height: 200, marginBottom: 20, borderRadius: 100}}
           />
         )}
         <StyledView className="flex flex-column justify-around w-full p-6 rounded-lg gap-6">
@@ -91,6 +97,9 @@ const Camara = () => {
             <StyledText className="text-white text-lg font-semibold text-center">Usar Galería</StyledText>
           </StyledTouchableOpacity>
         </StyledView>
+        {loading && (
+          <ActivityIndicator size="large" color="#00ff00" className="mt-4" />
+        )}
         {apiResponse && (
           <StyledView className="mt-6 p-4 bg-white rounded-lg shadow-lg w-full">
             <StyledText className="text-black text-lg font-semibold">Antecedentes:</StyledText>
@@ -98,7 +107,8 @@ const Camara = () => {
           </StyledView>
         )}
       </StyledSafeAreaView>
-    </ScrollView>  
+      </StyledView>
+    </ScrollView>
   );
 };
 
