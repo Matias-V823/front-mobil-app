@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, SafeAreaView, ScrollView, ActivityIndicator, Alert } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { View, Text, TouchableOpacity, Image, SafeAreaView, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { styled } from 'nativewind';
-import { FullWindowOverlay } from 'react-native-screens';
+// import { ScrollView } from 'react-native-gesture-handler';
+import { ApiKeyContext } from '../components/ApiKey';
 
 const Camara = () => {
   const StyledSafeAreaView = styled(SafeAreaView);
@@ -13,7 +14,9 @@ const Camara = () => {
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [apiResponse, setApiResponse] = useState(null);
-  const [loading, setLoading] = useState(false);
+
+  //API
+  const { apiKey } = useContext(ApiKeyContext);
 
   const uploadImage = async (option) => {
     try {
@@ -47,13 +50,12 @@ const Camara = () => {
         console.log("La selección de imagen fue cancelada o no se seleccionó ninguna imagen");
       }
     } catch (error) {
-      Alert.alert("Error", "Error al cargar la imagen: " + error.message);
+      console.error("Error al cargar la imagen:", error.message);
     }
   };
 
   const sendImageToApi = async (imageUri) => {
     try {
-      setLoading(true);
       const formData = new FormData();
       formData.append('image', {
         uri: imageUri,
@@ -61,32 +63,29 @@ const Camara = () => {
         name: 'image.jpg',
       });
 
-      const response = await fetch('http://192.168.70.147:8000/api/analizar_imagen/', {
+      const response = await fetch('https://wpcpsvb9-8000.brs.devtunnels.ms/carabinero/analizar_imagen/', {
         method: 'POST',
         body: formData,
         headers: {
           'Content-Type': 'multipart/form-data',
+          'APIKEY': apiKey
         },
       });
 
       const json = await response.json();
       setApiResponse(json);
     } catch (error) {
-      Alert.alert("Error", "Error al enviar la imagen a la API: " + error.message);
-    } finally {
-      setLoading(false);
+      console.error('Error al enviar la imagen a la API:', error.message);
     }
   };
 
   return (
-    <ScrollView className="flex-1 bg-white">
-      <StyledView className="p-4">
-      <StyledText className="text-black text-5xl font-bold mt-4">Escaneo</StyledText>
-      <StyledSafeAreaView className="flex-1 justify-center items-center p-6 w-full mt-4">
+    <ScrollView>
+      <StyledSafeAreaView className="flex-1 justify-center items-center p-6 w-full bg-gray-100">
         {selectedImage && (
           <StyledImage
             source={{ uri: selectedImage }}
-            style={{ width: 200, height: 200, marginBottom: 20, borderRadius: 100}}
+            style={{ width: 200, height: 200, marginBottom: 20, borderRadius: 10 }}
           />
         )}
         <StyledView className="flex flex-column justify-around w-full p-6 rounded-lg gap-6">
@@ -97,18 +96,15 @@ const Camara = () => {
             <StyledText className="text-white text-lg font-semibold text-center">Usar Galería</StyledText>
           </StyledTouchableOpacity>
         </StyledView>
-        {loading && (
-          <ActivityIndicator size="large" color="#00ff00" className="mt-4" />
-        )}
         {apiResponse && (
           <StyledView className="mt-6 p-4 bg-white rounded-lg shadow-lg w-full">
             <StyledText className="text-black text-lg font-semibold">Antecedentes:</StyledText>
-            <StyledText className="text-black mt-2">{JSON.stringify(apiResponse)}</StyledText>
+            {/* <StyledText className="text-black mt-2">{JSON.stringify(apiResponse)}</StyledText> */}
+            <StyledText> Nombre = {apiResponse.personaconantecedentes.persona.nombre} </StyledText>
           </StyledView>
         )}
       </StyledSafeAreaView>
-      </StyledView>
-    </ScrollView>
+    </ScrollView>  
   );
 };
 

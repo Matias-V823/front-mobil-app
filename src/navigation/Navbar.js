@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Text } from 'react-native';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 // Screens
 import Inicio from '../screens/Inicio';
@@ -10,9 +10,13 @@ import Busqueda from '../screens/Busqueda';
 import Camara from '../screens/Camara';
 import Perfil from '../screens/Perfil';
 import Asistencia from '../screens/Asistencia';
+import Login from '../screens/Login'; 
 
 // Iconos
 import Feather from '@expo/vector-icons/Feather';
+
+//API
+import ApiKey from '../components/ApiKey';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -26,6 +30,7 @@ function InicioStack() {
   );
 }
 
+// Barra de Navegación entre pantallas
 function MyTabs() {
   return (
     <Tab.Navigator
@@ -35,7 +40,7 @@ function MyTabs() {
       }}
     >
       <Tab.Screen
-        name="InicioTab"
+        name="Inicio"
         component={InicioStack}
         options={{
           tabBarLabel: ({ focused }) => (
@@ -87,10 +92,26 @@ function MyTabs() {
   );
 }
 
+
+function MainStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+      <Stack.Screen name="Home" component={MyTabs} options={{ headerShown: false }} />
+    </Stack.Navigator>
+  );
+}
+
+
+
+
+//Navegación principal
 export default function Navigation() {
   return (
-    <NavigationContainer>
-      <MyTabs />
-    </NavigationContainer>
+    <ApiKey>
+      <NavigationContainer>
+        <MainStack />
+      </NavigationContainer>
+    </ApiKey>
   );
 }

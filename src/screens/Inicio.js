@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, SafeAreaView, ScrollView } from 'react-native';
 import { styled } from 'nativewind';
 import Feather from '@expo/vector-icons/Feather';
@@ -9,6 +9,7 @@ const StyledView = styled(View);
 const StyledText = styled(Text);
 const StyledTouchableOpacity = styled(TouchableOpacity);
 const StyledImage = styled(Image);
+
 
 const userData = {
   name: 'Matías Jesús Varas Aquín',
@@ -24,6 +25,9 @@ const criminals = ['Criminal 1', 'Criminal 2', 'Criminal 3'];
 
 const Inicio = () => {
   const navigation = useNavigation();
+
+
+    
 
   return (
     <StyledSafeAreaView className="flex-1 bg-white">
@@ -50,11 +54,11 @@ const Inicio = () => {
           </StyledView>
 
           <StyledTouchableOpacity
-            className="bg-green-600 rounded-2xl p-4 mt-6 w-full items-center flex-row justify-center shadow-lg"
+            className="bg-green-600 rounded-2xl p-4 mt-6 w-full items-center flex-row justify-center"
             onPress={() => navigation.navigate('Asistencia')}
           >
             <Feather name="help-circle" size={24} color="white" className="mr-2" />
-            <StyledText className="text-white font-bold text-lg">Asistencia</StyledText>
+            <StyledText className="text-white font-bold">Asistencia</StyledText>
           </StyledTouchableOpacity>
 
           <StyledText className="text-black text-2xl font-bold mt-4">Criminales más Buscados</StyledText>
