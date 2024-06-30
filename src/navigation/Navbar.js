@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Text } from 'react-native';
 
 // Screens
 import Inicio from '../screens/Inicio';
@@ -10,13 +10,14 @@ import Busqueda from '../screens/Busqueda';
 import Camara from '../screens/Camara';
 import Perfil from '../screens/Perfil';
 import Asistencia from '../screens/Asistencia';
-import Login from '../screens/Login'; 
+import Login from '../screens/Login';
+import Bienvenida from '../screens/Bienvenida'; // Importa Bienvenida
 
 // Iconos
 import Feather from '@expo/vector-icons/Feather';
 
 //API
-import ApiKey from '../components/ApiKey';
+import ApiKey, { ApiKeyContext } from '../components/ApiKey';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -92,20 +93,33 @@ function MyTabs() {
   );
 }
 
-
 function MainStack() {
+  const { apiKey } = useContext(ApiKeyContext);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    if (apiKey) {
+      setIsLoggedIn(true);
+    }
+  }, [apiKey]);
+
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-      <Stack.Screen name="Home" component={MyTabs} options={{ headerShown: false }} />
+      {isLoggedIn ? (
+        <>
+          <Stack.Screen name="Home" component={MyTabs} options={{ headerShown: false }} />
+        </>
+      ) : (
+        <>
+          <Stack.Screen name="Bienvenida" component={Bienvenida} options={{ headerShown: false }} />
+          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+        </>
+      )}
     </Stack.Navigator>
   );
 }
 
-
-
-
-//Navegación principal
+// Navegación principal
 export default function Navigation() {
   return (
     <ApiKey>

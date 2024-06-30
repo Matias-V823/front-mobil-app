@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
 import { NativeWindStyleSheet } from 'nativewind';
 import { StatusBar } from 'expo-status-bar';
+import { LinearGradient } from 'expo-linear-gradient';
 import { ApiKeyContext } from '../components/ApiKey';
 
 const Login = ({ navigation }) => {
@@ -38,34 +39,38 @@ const Login = ({ navigation }) => {
       navigation.replace('Home');
     } else {
       console.log('Login fallido');
-      
     }
   };
 
   return (
-    <View className='flex-1 justify-center items-center bg-gradient-to-t from-green-200 to-white'>
+    <View className='flex-1'>
       <StatusBar style="auto" />
-      <TextInput
-        className='w-4/5 h-12 px-4 mb-4 border border-gray-300 rounded-lg'
-        placeholder="Correo"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        className='w-4/5 h-12 px-4 mb-4 border border-gray-300 rounded-lg'
-        placeholder="Clave"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
-      <TouchableOpacity className='w-4/5 h-12 bg-[#007328] rounded-lg justify-center items-center' onPress={handleLogin}>
-        <Text className='text-white text-lg font-semibold'>Iniciar Sesión</Text>
-      </TouchableOpacity>
-      <TouchableOpacity className='mt-4'>
-        <Text className='text-[#007328]'>¿Olvidaste la clave?</Text>
-      </TouchableOpacity>
-      <View className='absolute bottom-8'>
-        <Text className='text-black'>Criminal <Text className='font-bold'>Scan</Text></Text>
+      <View className='flex-1 justify-center items-center'>
+        <Image source={require('../assets/icon.png')} style={{ width: 100, height: 100, position: 'absolute', top: '18%' }} />
+        <View className='w-4/5 justify-center items-center'>
+          <TextInput
+            className='w-full h-12 px-4 mb-4 border border-gray-300 bg-white rounded-lg'
+            placeholder="Correo"
+            value={email}
+            onChangeText={setEmail}
+          />
+          <TextInput
+            className='w-full h-12 px-4 mb-4 border border-gray-300 bg-white rounded-lg'
+            placeholder="Clave"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
+          <TouchableOpacity className='w-full h-12 bg-[#007328] rounded-lg justify-center items-center' onPress={handleLogin}>
+            <Text className='text-white text-lg font-semibold'>Iniciar Sesión</Text>
+          </TouchableOpacity>
+          <TouchableOpacity className='mt-4'>
+            <Text className='text-[#007328]'>¿Olvidaste la clave?</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+      <View className='absolute bottom-8 w-full items-center'>
+        <Text className='font-bold text-green-700'>Criminal <Text className='font-light'>Scan</Text></Text>
       </View>
     </View>
   );
