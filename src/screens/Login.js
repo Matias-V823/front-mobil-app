@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { NativeWindStyleSheet } from 'nativewind';
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,6 +8,7 @@ import { ApiKeyContext } from '../components/ApiKey';
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const { setApiKey } = useContext(ApiKeyContext);
 
   const inicioSesion = async () => {
@@ -33,7 +34,9 @@ const Login = ({ navigation }) => {
   };
 
   const handleLogin = async () => {
+    setLoading(true);
     const response = await inicioSesion();
+    setLoading(false);
     if (response && response.APIKEY) { 
       setApiKey(response.APIKEY);
       navigation.replace('Home');
@@ -61,8 +64,16 @@ const Login = ({ navigation }) => {
             value={password}
             onChangeText={setPassword}
           />
-          <TouchableOpacity className='w-full h-12 bg-[#007328] rounded-lg justify-center items-center' onPress={handleLogin}>
-            <Text className='text-white text-lg font-semibold'>Iniciar Sesión</Text>
+          <TouchableOpacity 
+            className='w-full h-12 bg-[#007328] rounded-lg justify-center items-center' 
+            onPress={handleLogin}
+            disabled={loading}
+          >
+            {loading ? (
+              <ActivityIndicator size="small" color="#FFFFFF" />
+            ) : (
+              <Text className='text-white text-lg font-semibold'>Iniciar Sesión</Text>
+            )}
           </TouchableOpacity>
           <TouchableOpacity className='mt-4'>
             <Text className='text-[#007328]'>¿Olvidaste la clave?</Text>
