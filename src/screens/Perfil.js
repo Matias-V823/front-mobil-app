@@ -159,7 +159,7 @@ const Perfil = () => {
             <StyledText className="text-black text-xl font-bold mb-4">Acerca de</StyledText>
             <StyledText className="text-gray-800 mb-4">Criminal Scan Copyright 2024 Cone y sus Zanahorias. All rights reserved.</StyledText>
             <StyledPressable
-              className="bg-green-600 rounded-2xl p-4 mt-6 w-full items-center"
+              className="bg-green-600 rounded-2xl p-4 w-full items-center"
               onPress={() => setModalVisible(false)}
             >
               <StyledText className="text-white font-bold">Cerrar</StyledText>
