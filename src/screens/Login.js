@@ -50,7 +50,7 @@ const Login = ({ navigation }) => {
         <View className='w-4/5 justify-center items-center'>
           <TextInput
             className='w-full h-12 px-4 mb-4 border border-gray-300 bg-white rounded-lg'
-            placeholder="Correo"
+            placeholder="Correo Electrónico"
             value={email}
             onChangeText={setEmail}
           />

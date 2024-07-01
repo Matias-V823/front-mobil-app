@@ -16,7 +16,7 @@ const Bienvenida = ({ navigation }) => {
       </View>
       <View className='mt-[200px] items-end'>
         <TouchableOpacity
-          className='bg-[#007328] py-3 px-6 rounded-full'
+          className='bg-[#007328] py-3 px-6 rounded-lg'
           onPress={() => navigation.navigate('Login')} // Navega a la pantalla de Login
         >
           <Text className='text-white text-lg font-semibold'>Iniciar Sesion</Text>
