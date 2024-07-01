@@ -1,8 +1,9 @@
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import Feather from '@expo/vector-icons/Feather';
 
 // Screens
 import Inicio from '../screens/Inicio';
@@ -10,14 +11,12 @@ import Busqueda from '../screens/Busqueda';
 import Camara from '../screens/Camara';
 import Perfil from '../screens/Perfil';
 import Asistencia from '../screens/Asistencia';
-import Login from '../screens/Login'; 
+import Login from '../screens/Login';
 
-// Iconos
-import Feather from '@expo/vector-icons/Feather';
-
-
-//API
+// API
+import { ApiCriminales } from '../components/ApiCriminales';
 import ApiKey from '../components/ApiKey';
+import {ScanProvider} from '../components/ScanProvider'
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -31,7 +30,6 @@ function InicioStack() {
   );
 }
 
-// Barra de Navegación entre pantallas
 function MyTabs() {
   return (
     <Tab.Navigator
@@ -93,7 +91,6 @@ function MyTabs() {
   );
 }
 
-
 function MainStack() {
   return (
     <Stack.Navigator>
@@ -103,15 +100,15 @@ function MainStack() {
   );
 }
 
-
-
-
-//Navegación principal
 export default function Navigation() {
   return (
     <ApiKey>
       <NavigationContainer>
-        <MainStack />
+        <ApiCriminales>
+            <ScanProvider>
+              <MainStack />
+            </ScanProvider>
+        </ApiCriminales>
       </NavigationContainer>
     </ApiKey>
   );

@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, SafeAreaView, ScrollView } from 'react-native';
 import { styled } from 'nativewind';
 import Feather from '@expo/vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
+import { CriminalsContext } from '../components/ApiCriminales';
+import { ScanContext } from '../components/ScanProvider';
+import CriminalesMasBuscados from '../components/CriminalesMasBuscados'; // Importa CriminalesMasBuscados
 
 const StyledSafeAreaView = styled(SafeAreaView);
 const StyledView = styled(View);
@@ -10,48 +13,16 @@ const StyledText = styled(Text);
 const StyledTouchableOpacity = styled(TouchableOpacity);
 const StyledImage = styled(Image);
 
-
-const userData = {
-  name: 'Matías Jesús Varas Aquín',
-  rut: '20.999.999-1',
-  rank: 'Cabo Mayor',
-  code: '010093-L',
-  squadron: 'OS7',
-  bloodGroup: 'O4 RH +',
-  validity: '08/2024',
-};
-
-const criminals = ['Criminal 1', 'Criminal 2', 'Criminal 3'];
-
 const Inicio = () => {
   const navigation = useNavigation();
-
-
-    
+  const apiResponse = useContext(CriminalsContext);
+  const { scans } = useContext(ScanContext);
 
   return (
     <StyledSafeAreaView className="flex-1 bg-white">
       <ScrollView>
         <StyledView className="p-4">
           <StyledText className="text-black text-5xl font-bold mt-4">Inicio</StyledText>
-
-          <StyledView className="rounded-2xl shadow-lg bg-white mt-4">
-            <StyledView className="bg-green-600 rounded-t-2xl p-2">
-              <StyledText className="text-white font-bold text-center">CREDENCIAL</StyledText>
-            </StyledView>
-            <StyledView className="flex-row p-4">
-              <StyledView className="w-20 h-30 bg-gray-400 rounded mr-4" />
-              <StyledView>
-                <StyledText className="text-black font-bold text-xl">{userData.name}</StyledText>
-                <StyledText className="text-gray-600 text-1xl">Rut: {userData.rut}</StyledText>
-                <StyledText className="text-gray-600 text-1xl">Grado: {userData.rank}</StyledText>
-                <StyledText className="text-gray-600 text-1xl">Código: {userData.code}</StyledText>
-                <StyledText className="text-gray-600 text-1xl">Escuadrón: {userData.squadron}</StyledText>
-                <StyledText className="text-gray-600 text-1xl">Grupo Sanguíneo: {userData.bloodGroup}</StyledText>
-                <StyledText className="text-gray-600 text-1xl">Validez: {userData.validity}</StyledText>
-              </StyledView>
-            </StyledView>
-          </StyledView>
 
           <StyledTouchableOpacity
             className="bg-green-600 rounded-2xl p-4 mt-6 w-full items-center flex-row justify-center"
@@ -62,16 +33,34 @@ const Inicio = () => {
           </StyledTouchableOpacity>
 
           <StyledText className="text-black text-2xl font-bold mt-4">Criminales más Buscados</StyledText>
+          <CriminalesMasBuscados criminals={apiResponse && apiResponse.Datos} />
 
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} className="mt-4">
-            {criminals.map((criminal, index) => (
-              <StyledView key={index} className="bg-gray-100 p-4 rounded-lg w-60 mr-4" style={{ height: 248 }}>
-                <StyledText className="text-gray-600">{criminal}</StyledText>
+          <StyledText className="text-black text-2xl font-bold mt-4">Escaneos Recientes</StyledText>
+          <StyledView>
+            {scans.map((scan, index) => (
+              <StyledView key={index} className="mt-4 p-4 bg-gray-100 rounded-lg shadow-lg">
+                <StyledImage
+                  source={{ uri: scan.imageUri }}
+                  style={{ width: 100, height: 100, marginBottom: 10, borderRadius: 10 }}
+                />
+                <StyledText className="text-black text-lg font-semibold">Antecedentes:</StyledText>
+                <StyledText> Nombre: {scan.apiResponse.personaconantecedentes.persona.nombre} </StyledText>
+                <StyledText> Apellido: {scan.apiResponse.personaconantecedentes.persona.apellido}</StyledText>
+                <StyledText> Fecha de Nacimiento: {scan.apiResponse.personaconantecedentes.persona.fechaDeNacimiento}</StyledText>
+                <StyledText> Dirección: {scan.apiResponse.personaconantecedentes.persona.direccion}</StyledText>
+                <StyledText> Antecedentes: {scan.apiResponse.antecedentes.map((antecedente, idx) => (
+                  <Text key={idx}>{antecedente.descripcion}{'\n'}</Text>
+                ))}</StyledText>
               </StyledView>
             ))}
-          </ScrollView>
+          </StyledView>
+
         </StyledView>
       </ScrollView>
+
+
+
+      
     </StyledSafeAreaView>
   );
 };

@@ -2,8 +2,8 @@ import React, { useContext, useState } from 'react';
 import { View, Text, TouchableOpacity, Image, SafeAreaView, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { styled } from 'nativewind';
-// import { ScrollView } from 'react-native-gesture-handler';
 import { ApiKeyContext } from '../components/ApiKey';
+import { ScanContext } from '../components/ScanProvider';
 
 const Camara = () => {
   const StyledSafeAreaView = styled(SafeAreaView);
@@ -17,6 +17,7 @@ const Camara = () => {
 
   //API
   const { apiKey } = useContext(ApiKeyContext);
+  const { addScan } = useContext(ScanContext);
 
   const uploadImage = async (option) => {
     try {
@@ -74,6 +75,7 @@ const Camara = () => {
 
       const json = await response.json();
       setApiResponse(json);
+      addScan({ imageUri, apiResponse: json });
     } catch (error) {
       console.error('Error al enviar la imagen a la API:', error.message);
     }
@@ -99,12 +101,17 @@ const Camara = () => {
         {apiResponse && (
           <StyledView className="mt-6 p-4 bg-white rounded-lg shadow-lg w-full">
             <StyledText className="text-black text-lg font-semibold">Antecedentes:</StyledText>
-            {/* <StyledText className="text-black mt-2">{JSON.stringify(apiResponse)}</StyledText> */}
-            <StyledText> Nombre = {apiResponse.personaconantecedentes.persona.nombre} </StyledText>
+            <StyledText> Nombre: {apiResponse.personaconantecedentes.persona.nombre} </StyledText>
+            <StyledText> Apellido: {apiResponse.personaconantecedentes.persona.apellido}</StyledText>
+            <StyledText> Fecha de Nacimiento: {apiResponse.personaconantecedentes.persona.fechaDeNacimiento}</StyledText>
+            <StyledText> Dirección: {apiResponse.personaconantecedentes.persona.direccion}</StyledText>
+            <StyledText> Antecedentes: {apiResponse.antecedentes.map((antecedente, idx) => (
+              <Text key={idx}>{antecedente.descripcion}{'\n'}</Text>
+            ))}</StyledText>
           </StyledView>
         )}
       </StyledSafeAreaView>
-    </ScrollView>  
+    </ScrollView>
   );
 };
 

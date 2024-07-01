@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { NativeWindStyleSheet } from 'nativewind';
 import { StatusBar } from 'expo-status-bar';
@@ -34,6 +34,7 @@ const Login = ({ navigation }) => {
   const handleLogin = async () => {
     const response = await inicioSesion();
     if (response && response.APIKEY) { 
+      console.log("Api Key: " ,response.APIKEY)
       setApiKey(response.APIKEY);
       navigation.replace('Home');
     } else {
